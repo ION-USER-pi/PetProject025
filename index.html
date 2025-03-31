@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>petproject025</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --accent: #fd79a8;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --error: #d63031;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        .navbar {
+            background-color: var(--dark);
+            color: white;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .logo-icon {
+            margin-right: 10px;
+            background-color: var(--primary);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-items {
+            display: flex;
+            list-style-type: none;
+        }
+        
+        .nav-items li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-items a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-items a:hover {
+            color: var(--accent);
+        }
+        
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 2px 0;
+            transition: 0.4s;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            margin-bottom: 2rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+        }
+        
+        .cta-secondary {
+            background-color: transparent;
+            border: 2px solid white;
+        }
+        
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+        }
+        
+        .wave svg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 4px;
+            background-color: var(--accent);
+            margin: 1rem auto;
+        }
+        
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+            width: 300px;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .card h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .query-example {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+        
+        .query-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .query-body {
+            padding: 1rem;
+        }
+        
+        pre {
+            margin: 0;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+        }
+        
+        .run-button {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .run-button:hover {
+            background-color: #00a37a;
+        }
+        
+        .output {
+            background-color: #f1f2f6;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .faq {
+            margin-top: 4rem;
+        }
+        
+        .faq-item {
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 1rem;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        .faq-question::after {
+            content: '+';
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .faq-question.active::after {
+            content: '-';
+        }
+        
+        .faq-answer {
+            padding: 1rem;
+            display: none;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--primary);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .timeline-content {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            position: relative;
+            width: calc(50% - 30px);
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+        
+        .timeline-date {
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+            top: 20px;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            left: -44px;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content::before {
+            right: -44px;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        
+        .social-icons {
+            margin: 2rem 0;
+        }
+        
+        .social-icons a {
+            color: white;
+            margin: 0 0.5rem;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: var(--accent);
+        }
+        
+        @media screen and (max-width: 768px) {
+            .nav-items {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                background-color: var(--dark);
+                padding: 1rem;
+            }
+            
+            .nav-items.active {
+                display: flex;
+            }
+            
+            .nav-items li {
+                margin: 0.5rem 0;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-content {
+                width: calc(100% - 60px);
+                margin-left: 60px !important;
+            }
+            
+            .timeline-item:nth-child(odd) .timeline-content::before,
+            .timeline-item:nth-child(even) .timeline-content::before {
+                left: -34px;
+            }
+            
+            .card {
+                width: 100%;
+            }
+        }
+        
+        /* Animation classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Glowing effect for accents */
+        .glow {
+            position: relative;
+        }
+        
+        .glow::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            box-shadow: 0 0 15px var(--primary);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .glow:hover::after {
+            opacity: 1;
+        }
+        
+        /* Thematic visual elements */
+        .data-node {
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            position: absolute;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.3;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <div class="logo-icon">S</div>
+            <span>SPARQL</span> Explorer
+        </a>
+        <ul class="nav-items">
+            <li><a href="#about">About</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#history">History</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ul>
+        <div class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+    
+    <section class="hero">
+        <div class="data-node" style="top: 20%; left: 10%;"></div>
+        <div class="data-node" style="top: 60%; left: 20%;"></div>
+        <div class="data-node" style="top: 30%; right: 15%;"></div>
+        <div class="data-node" style="top: 70%; right: 25%;"></div>
+        
+        <h1>SPARQL: <span class="glow">Query the Semantic Web</span></h1>
+        <p>SPARQL (Simple Protocol and RDF Query Language) is a powerful query language for RDF data, enabling semantic web applications to extract and manipulate linked data.</p>
+        <div>
+            <a href="#examples" class="cta-button">See Examples</a>
+            <a href="#about" class="cta-button cta-secondary">Learn More</a>
+        </div>
+        <div class="wave">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100">
+                <path fill="#f5f6fa" fill-opacity="1" d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,85.3C672,75,768,85,864,90.7C960,96,1056,96,1152,90.7C1248,85,1344,75,1392,69.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </div>
+    </section>
+    
+    <section id="about" class="container">
+        <div class="section-title">
+            <h2>What is SPARQL?</h2>
+            <p>Understanding the Semantic Web Query Language</p>
+        </div>
+        <div class="cards">
+            <div class="card fade-in">
+                <div class="card-header">
+                    <div class="card-icon">📊</div>
+                    <h3>RDF Query Language</h3>
+                </div>
+                <div class="card-body">
+                    <p>SPARQL is designed to query data stored in RDF (Resource Description Framework) format, the standard model for data interchange on the semantic web.</p>
+                </div>
+            </div>
+            <div class="card fade-in">
+                <div class="card-header">
+                    <div class="card-icon">🔍</div>
+                    <h3>Pattern Matching</h3>
+                </div>
+                <div class="card-body">
+                    <p>SPARQL queries consist of triple patterns, conjunctions, disjunctions, and optional patterns, allowing complex data extraction from RDF datasets.</p>
+                </div>
+            </div>
+            <div class="card fade-in">
+                <div class="card-header">
+                    <div class="card-icon">🌐</div>
+                    <h3>W3C Standard</h3>
+                </div>
+                <div class="card-body">
+                    <p>As a W3C recommendation, SPARQL is a key technology in the semantic web stack, enabling standardized access to linked data.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="features" class="container">
+        <div class="section-title">
+            <h2>Key Features</h2>
+            <p>What makes SPARQL powerful</p>
+        </div>
+        <div class="cards">
+            <div class="card fade-in">
+                <div class="card-header">
+                    <div class="card-icon">⚙️</div>
+                    <h3>Query Operations</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>SELECT: Extract values from data</li>
+                        <li>CONSTRUCT: Return RDF graphs</li>
+                        <li>ASK: Boolean queries</li>
+                        <li>DESCRIBE: Resource descriptions</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card fade-in">
+                <div class="card-header">
+                    <div class="card-icon">🧩</div>
+                    <h3>Advanced Patterns</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>FILTER: Restrict solutions</li>
+                        <li>OPTIONAL: Handle missing data</li>
+                        <li>UNION: Alternative patterns</li>
+                        <li>GROUP BY: Aggregate results</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card fade-in">
+                <div class="card-header">
+                    <div class="card-icon">🔄</div>
+                    <h3>Protocol Features</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>HTTP access to SPARQL endpoints</li>
+                        <li>Standard query results format</li>
+                        <li>Federated querying across datasets</li>
+                        <li>Update operations (SPARQL 1.1)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="examples" class="container">
+        <div class="section-title">
+            <h2>SPARQL in Action</h2>
+            <p>Example queries and their results</p>
+        </div>
+        
+        <div class="query-example fade-in">
+            <div class="query-header">
+                <h3>Basic SELECT Query</h3>
+                <button class="run-button">Run Query</button>
+            </div>
+            <div class="query-body">
+                <pre><code class="language-sparql">PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT ?name ?email
+WHERE {
+  ?person foaf:name ?name .
+  ?person foaf:mbox ?email .
+}</code></pre>
+                <div class="output">
+                    <table border="1" cellpadding="5">
+                        <thead>
+                            <tr>
+                                <th>name</th>
+                                <th>email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Alice Smith</td>
+                                <td>alice@example.org</td>
+                            </tr>
+                            <tr>
+                                <td>Bob Johnson</td>
+                                <td>bob@example.org</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="query-example fade-in">
+            <div class="query-header">
+                <h3>FILTER with Regular Expression</h3>
+                <button class="run-button">Run Query</button>
+            </div>
+            <div class="query-body">
+                <pre><code class="language-sparql">PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+SELECT ?title
+WHERE {
+  ?book dc:title ?title .
+  FILTER regex(?title, "SPARQL", "i")
+}</code></pre>
+                <div class="output">
+                    <table border="1" cellpadding="5">
+                        <thead>
+                            <tr>
+                                <th>title</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Learning SPARQL</td>
+                            </tr>
+                            <tr>
+                                <td>SPARQL Query Language Tutorial</td>
+                            </tr>
+                            <tr>
+                                <td>Introduction to SPARQL and RDF</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="query-example fade-in">
+            <div class="query-header">
+                <h3>Complex Query with OPTIONAL and UNION</h3>
+                <button class="run-button">Run Query</button>
+            </div>
+            <div class="query-body">
+                <pre><code class="language-sparql">PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+
+SELECT ?name ?email ?homepage
+WHERE {
+  ?person foaf:name ?name .
+  OPTIONAL { ?person foaf:mbox ?email }
+  {
+    ?person dc:publisher "Publisher A" .
+  } UNION {
+    ?person foaf:homepage ?homepage .
+  }
+}</code></pre>
+                <div class="output">
+                    <table border="1" cellpadding="5">
+                        <thead>
+                            <tr>
+                                <th>name</th>
+                                <th>email</th>
+                                <th>homepage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Alice Smith</td>
+                                <td>alice@example.org</td>
+                                <td>http://alice.example.org</td>
+                            </tr>
+                            <tr>
+                                <td>Bob Johnson</td>
+                                <td>bob@example.org</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Charlie Brown</td>
+                                <td></td>
+                                <td>http://charlie.example.org</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="history" class="container">
+        <div class="section-title">
+            <h2>Evolution of SPARQL</h2>
+            <p>Key milestones in SPARQL development</p>
+        </div>
+        
+        <div class="timeline">
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-date">2004</div>
+                    <h3>Initial Development</h3>
+                    <p>Initial work on SPARQL begins as part of the W3C's Semantic Web Activity.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-date">2006</div>
+                    <h3>SPARQL Working Draft</h3>
+                    <p>The W3C releases the first public working draft of the SPARQL query language specification.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-date">January 2008</div>
+                    <h3>SPARQL 1.0</h3>
+                    <p>SPARQL 1.0 becomes an official W3C Recommendation, providing a standardized query language for RDF.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-date">March 2013</div>
+                    <h3>SPARQL 1.1</h3>
+                    <p>SPARQL 1.1 is released, adding update operations, aggregates, subqueries, property paths, and federated queries.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item fade-in">
+                <div class="timeline-content">
+                    <div class="timeline-date">2013 - Present</div>
+                    <h3>Widespread Adoption</h3>
+                    <p>SPARQL becomes central to many semantic web applications, linked open data projects, and knowledge graphs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="faq" class="container">
+        <div class="section-title">
+            <h2>Frequently Asked Questions</h2>
+            <p>Common questions about SPARQL</p>
+        </div>
+        
+        <div class="faq">
+            <div class="faq-item fade-in">
+                <div class="faq-question">What is the difference between SPARQL and SQL?</div>
+                <div class="faq-answer">
+                    <p>While both are query languages, SQL works with relational databases (tables, rows, columns) while SPARQL works with RDF data (triples of subject-predicate-object). SPARQL is specifically designed for graph-based data and semantic relationships, allowing for more flexible queries across linked data.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item fade-in">
+                <div class="faq-question">How do I access a SPARQL endpoint?</div>
+                <div class="faq-answer">
+                    <p>SPARQL endpoints are web services that accept SPARQL queries and return results. You can access them programmatically via HTTP requests or through browser-based interfaces. Many semantic web datasets provide public SPARQL endpoints like DBpedia (http://dbpedia.org/sparql) or Wikidata (https://query.wikidata.org/).</p>
+                </div>
+            </div>
+            
+            <div class="faq-item fade-in">
+                <div class="faq-question">What are SPARQL's limitations?</div>
+                <div class="faq-answer">
+                    <p>SPARQL can be more complex than SQL for beginners, may have performance issues with very large datasets, and isn't as widely supported in mainstream database systems. Some complex graph operations might require multiple queries or extensions, and the federated querying capability can be limited by endpoint availability and performance.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item fade-in">
+                <div class="faq-question">Can SPARQL modify data?</div>
+                <div class="faq-answer">
+                    <p>Yes, SPARQL 1.1 introduced update operations. It includes commands like INSERT DATA, DELETE DATA, DELETE/INSERT, LOAD, CLEAR, and DROP which allow for adding, removing, and modifying RDF data in a dataset. These operations are similar to SQL's DML (Data Manipulation Language) commands.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item fade-in">
+                <div class="faq-question">What tools can I use with SPARQL?</div>
+                <div class="faq-answer">
+                    <p>There are many tools available for working with SPARQL, including:</p>
+                    <ul>
+                        <li>Apache Jena: A Java framework for building semantic web applications</li>
+                        <li>Virtuoso: An RDF store with SPARQL endpoint capabilities</li>
+                        <li>GraphDB: A semantic graph database with SPARQL 1.1 support</li>
+                        <li>Stardog: A knowledge graph platform with SPARQL query capabilities</li>
+                        <li>YASGUI: A web-based SPARQL query editor</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <h2>SPARQL <span>Explorer</span></h2>
+        <p>Your gateway to the semantic web and linked data</p>
+        
+        <div class="footer-links">
+            <a href="#about">About</a>
+            <a href="#features">Features</a>
+            <a href="#examples">Examples</a>
+            <a href="#history">History</a>
+            <a href="#faq">FAQ</a>
+            <a href="https://www.w3.org/TR/sparql11-overview/" target="_blank">SPARQL 1.1 Spec</a>
+            <a href="https://www.w3.org/TR/rdf11-primer/" target="_blank">RDF Primer</a>
+        </div>
+        
+        <div class="social-icons">
+            <a href="#"><i>🐦</i></a>
+            <a href="#"><i>📘</i></a>
+            <a href="#"><i>📱</i></a>
+            <a href="#"><i>📺</i></a>
+        </div>
+        
+        <p>&copy; 2025 SPARQL Explorer. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Menu toggle
+        $(document).ready(function() {
+            $('.menu-toggle').click(function() {
+                $('.nav-items').toggleClass('active');
+            });
+            
+            // Smooth scrolling for anchor links
+            $('a[href^="#"]').on('click', function(e) {
+                e.preventDefault();
+                
+                $('html, body').animate({
+                    scrollTop: $($(this).attr('href')).offset().top - 70
+                }, 500);
+            });
+            
+            // Initialize syntax highlighting
+            hljs.highlightAll();
+            
+            // Run query button functionality
+            $('.run-button').click(function() {
+                const outputDiv = $(this).closest('.query-example').find('.output');
+                outputDiv.slideToggle();
+            });
+            
+            // FAQ toggle
+            $('.faq-question').click(function() {
+                $(this).toggleClass('active');
+                $(this).next('.faq-answer').slideToggle();
+            });
+            
+            // Scroll reveal animation
+            $(window).scroll(function() {
+                $('.fade-in').each(function() {
+                    const elementTop = $(this).offset().top;
+                    const elementVisible = 150;
+                    const windowHeight = $(window).height();
+                    const scrollTop = $(window).scrollTop();
+                    
+                    if (elementTop < (scrollTop + windowHeight - elementVisible)) {
+                        $(this).addClass('visible');
+                    }
+                });
+            });
+            
+            // Trigger initial scroll check
+            $(window).scroll();
+            
+            // Create random data nodes in the background
+            const heroSection = $('.hero');
+            for (let i = 0; i < 10; i++) {
+                const node = $('<div class="data-node"></div>');
+                const topPos = Math.random() * 100;
+                const leftPos = Math.random() * 100;
+                const size = Math.random() * 5 + 5;
+                
+                node.css({
+                    top: topPos + '%',
+                    left: leftPos + '%',
+                    width: size + 'px',
+                    height: size + 'px',
+                    animationDelay: Math.random() * 2 + 's'
+                });
+                
+                heroSection.append(node);
+            }
+        });
+    </script>
+</body>
+</html>
